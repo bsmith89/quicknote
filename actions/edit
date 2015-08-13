@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-edit_note ${1%.$NOTE_SUFFIX}.$NOTE_SUFFIX
+if ! [ -z $1 ]; then
+    NOTE=$1
+else
+    NOTE=$(list_infos | awk 'NR==1{print $1}')
+fi
+
+edit_note ${NOTE%.$NOTE_SUFFIX}.$NOTE_SUFFIX
