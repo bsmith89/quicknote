@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+list_matching_infos $* | column -s '	' -t
+exit $?
