@@ -73,7 +73,7 @@ get_new_note() {
         return 1
     fi
     if [ -z $1 ]; then
-        NOTE_FILE=$(mktemp -p $NOTE_DIR XXXXX.$NOTE_SUFFIX)
+        NOTE_FILE=$(mktemp -p $NOTE_DIR XXXX.$NOTE_SUFFIX)
         echo $NOTE_FILE
     elif [ -f "$NOTE_DIR/$1.$NOTE_SUFFIX" ]; then
         echo "'$NOTE_DIR/$1.$NOTE_SUFFIX' is already a note." >&2
