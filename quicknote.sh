@@ -3,7 +3,7 @@ set -o errexit
 
 # Config
 export NOTE_DIR=$HOME/Documents/NOTES
-export ADDON_DIR=$HOME/notequick_actions.d
+export ADDON_DIR=$HOME/quicknote.actions.d
 export DEFAULT_ACTION=list
 export DEFAULT_SORT='sort -k2,3r'
 export NOTE_SUFFIX=md
@@ -49,12 +49,14 @@ get_action() {
 # List all of the available actions.
 # TODO: Implement
 list_actions() {
-    echo "Not implemented" >&2
-    return 1
+    local DIRS=$ACTION_DIR
+    [ -d "$ADDON_DIR" ] && DIRS+=$ADDON_DIR
+    for action in $(find $DIRS -mindepth 1); do
+        echo $action
+    done
 }
 
 get_note() {
-    echo $1 >&2
     if [ -f "$NOTE_DIR/$1" ]; then
         echo $NOTE_DIR/$1
     elif [ -f "$NOTE_DIR/$1.$NOTE_SUFFIX" ]; then
@@ -156,7 +158,8 @@ edit_note() {
 }
 export -f edit_note echo_usage echo_help get_action list_actions get_note \
           get_new_note list_notes check_note note_title note_date list_infos \
-          list_matching list_infos_unsorted list_matching_infos list_empty
+          list_matching list_infos_unsorted list_matching_infos list_empty \
+          list_actions
 
 ACTION_EXE=$(get_action $action)
 $ACTION_EXE $*
