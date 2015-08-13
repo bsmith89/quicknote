@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+edit_note ${1%.$NOTE_SUFFIX}.$NOTE_SUFFIX

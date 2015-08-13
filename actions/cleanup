@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rm $(list_empty $1)

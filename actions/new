@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+NOTE_FILE=$(get_new_note $1)
+edit_note $(basename $NOTE_FILE)

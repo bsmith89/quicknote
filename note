@@ -54,8 +54,11 @@ list_actions() {
 }
 
 get_note() {
+    echo $1 >&2
     if [ -f "$NOTE_DIR/$1" ]; then
         echo $NOTE_DIR/$1
+    elif [ -f "$NOTE_DIR/$1.$NOTE_SUFFIX" ]; then
+        echo $NOTE_DIR/$1.$NOTE_SUFFIX
     else
         echo "No file '$NOTE_DIR/$1' found." >&2
         return 1
@@ -69,21 +72,23 @@ get_new_note() {
     fi
     if [ -z $1 ]; then
         NOTE_FILE=$(mktemp -p $NOTE_DIR XXXXX.$NOTE_SUFFIX)
-        echo $NOTE_TEMPLATE > $NOTE_FILE
         echo $NOTE_FILE
     elif [ -f "$NOTE_DIR/$1.$NOTE_SUFFIX" ]; then
-        echo "'$NOTE_DIR/$1.$NOTE_SUFFIX' is already a note."
+        echo "'$NOTE_DIR/$1.$NOTE_SUFFIX' is already a note." >&2
         return 1
     else
         NOTE_FILE=$NOTE_DIR/$1.$NOTE_SUFFIX
-        echo $NOTE_TEMPLATE > $NOTE_FILE
         echo $NOTE_FILE
     fi
 }
 
 list_notes() {
     set -f
-    find $NOTE_DIR -name "*.$NOTE_SUFFIX"
+    if [ -z $1 ]; then
+        find $NOTE_DIR -name "*.$NOTE_SUFFIX"
+    else
+        find $* -name "*.$NOTE_SUFFIX"
+    fi
     set +f
 }
 
@@ -136,12 +141,22 @@ list_infos() {
     list_infos_unsorted $* | $DEFAULT_SORT
 }
 
+list_empty() {
+    find $(list_notes $*) -empty
+
+}
+
 edit_note() {
-    $EDITOR $(get_note $1)
+    local NOTE_PATH=$(get_note $1)
+    if $(check_note $NOTE_PATH); then
+        $EDITOR $NOTE_PATH
+    else
+        return 1
+    fi
 }
 export -f edit_note echo_usage echo_help get_action list_actions get_note \
           get_new_note list_notes check_note note_title note_date list_infos \
-          list_matching list_infos_unsorted list_matching_infos
+          list_matching list_infos_unsorted list_matching_infos list_empty
 
 ACTION_EXE=$(get_action $action)
 $ACTION_EXE $*
