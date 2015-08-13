@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 if ! [ -z $1 ]; then
-    NOTE=$1
+    NAME=$1
 else
-    NOTE=$(list_infos | awk 'NR==1{print $1}')
+    NAME=$(list_infos | awk 'NR==1{print $1}')
 fi
 
-edit_note ${NOTE%.$NOTE_SUFFIX}.$NOTE_SUFFIX
+NOTE=${NAME%.$NOTE_SUFFIX}.$NOTE_SUFFIX
+edit_note $NOTE
+echo $NOTE >&2
