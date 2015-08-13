@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+for file in $(list_matching $*); do
+    echo === $file ===
+    echo "=== `note_title $file` ==="
+    grep -B 3 -A 3 --color=auto --ignore-case --no-filename "$*" $file
+done

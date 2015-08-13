@@ -117,7 +117,7 @@ note_date() {
 list_matching() {
     if [ -n "$*" ]; then
         pattern=$*
-        list_notes | xargs grep -l "$pattern"
+        list_notes | xargs grep --ignore-case -l "$pattern"
     else
         list_notes
     fi
