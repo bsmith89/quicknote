@@ -123,7 +123,12 @@ list_matching() {
 }
 
 list_matching_infos() {
-    list_infos $(list_matching $*)
+    matching=$(list_matching $*)
+    if ! [ -n "$matching" ]; then
+        return 1
+    else
+        list_infos $(list_matching $*)
+    fi
 }
 
 list_infos_unsorted() {
