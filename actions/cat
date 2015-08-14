@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+USAGE_MSG="$(basename $0) NOTE"
+HELP_MSG="Print the contents of NOTE to stdout."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
+if [ -z $1 ]; then
+    echo "Insufficient arguments."  >&2
+    echo "Usage: $USAGE_MSG"        >&2
+    exit 1
+elif ! [ -z $2 ]; then
+    echo "Too many arguments."      >&2
+    echo "Usage: $USAGE_MSG"        >&2
+    exit 1
+fi
+
+
+note=$(get_note $1)
+cat $note
