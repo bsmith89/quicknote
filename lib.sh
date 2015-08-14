@@ -139,7 +139,8 @@ list_infos_unsorted() {
     fi
     for note in $NOTES; do
         check_note $note
-        echo "$(basename $note)	$(note_date $note)	$(note_title $note)"
+        bn=$(basename $note)
+        echo "${bn/.${NOTE_SUFFIX}/}	$(note_date $note)	$(note_title $note)"
     done
 }
 
