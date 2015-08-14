@@ -5,7 +5,6 @@ easily expanded into full documents.
 
 -   Documentation
 -   Help
--   Git integration
 -   Open grep hits
 -   Work with prefixes of filenames
 -   Bootstrap on install
