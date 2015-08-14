@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+USAGE_MSG="$(basename $0) [NOTE]"
+HELP_MSG="Start a new note.  If NOTE given, use that as filename."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
+if ! [ -z $2 ]; then
+    echo "Too many arguments." >&2
+    echo $USAGE_MSG
+    exit 1
+fi
+
 NOTE_FILE=$(get_new_note $1)
 edit_note $(basename $NOTE_FILE)
 # Remove if still empty

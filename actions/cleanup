@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 
-rm $(list_empty $1)
+USAGE_MSG="$(basename $0) [NOTE, [NOTE, [...]]]"
+HELP_MSG="Remove empty note files.  Without arguments removes ALL empty notes."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
+rm $(list_empty $*)

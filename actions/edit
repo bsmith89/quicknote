@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
+USAGE_MSG="$(basename $0) [NOTE]"
+HELP_MSG="Edit NOTE.  Without argument, edit top note (see list command)."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
 if ! [ -z $1 ]; then
     NAME=$1
+elif ! [ -z $2 ]; then
+    echo "Too many arguments."
+    echo $USAGE_MSG
+    exit 1
 else
     NAME=$(list_infos | awk 'NR==1{print $1}')
 fi

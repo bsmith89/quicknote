@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+USAGE_MSG="$(basename $0)"
+HELP_MSG="Print a list of available actions."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
 for action in $(list_actions); do
     echo $(basename $action)
 done
