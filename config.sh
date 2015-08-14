@@ -1,0 +1,1 @@
+export CLIPBOARD=pbcopy
