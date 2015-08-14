@@ -40,15 +40,19 @@ list_actions() {
     done
 }
 
-# Given a basename, with or without extension, gets the full path to the
+# Given a basename or the prefix of a basename,
+# with or without extension, gets the full path to the
 # note file.
 get_note() {
-    if [ -f "$NOTE_DIR/$1" ]; then
-        echo $NOTE_DIR/$1
-    elif [ -f "$NOTE_DIR/$1.$NOTE_SUFFIX" ]; then
-        echo $NOTE_DIR/$1.$NOTE_SUFFIX
+    local possib=$(ls $NOTE_DIR/$1*)
+    if [ -z $possib ]; then
+        echo "No file matching '$NOTE_DIR/$1*' found"            >&2
+        return 1
+    elif [[ "$possib" == "${possib//[\' ]/}" ]]; then
+        echo $possib
     else
-        echo "No file '$NOTE_DIR/$1' found." >&2
+        echo "Multiple files found which match '$NOTE_DIR/$1\*':" >&2
+        echo $possib                                              >&2
         return 1
     fi
 }
