@@ -18,6 +18,4 @@ else
     NAME=$(list_infos | awk 'NR==1{print $1}')
 fi
 
-NOTE=${NAME%.$NOTE_SUFFIX}.$NOTE_SUFFIX
-edit_note $NOTE
-echo $NOTE >&2
+edit_note $NAME
