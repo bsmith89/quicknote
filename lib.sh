@@ -50,6 +50,8 @@ list_actions() {
     done
 }
 
+# Given a basename, with or without extension, gets the full path to the
+# note file.
 get_note() {
     if [ -f "$NOTE_DIR/$1" ]; then
         echo $NOTE_DIR/$1
@@ -78,6 +80,9 @@ get_new_note() {
     fi
 }
 
+# Produces a full list of note files in the $NOTE_DIR
+# If arguments are given, lists only notes with filenames that can
+# be found (recursively with find, so directories should work) in that list.
 list_notes() {
     set -f
     if [ -z $1 ]; then
