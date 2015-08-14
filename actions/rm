@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+for note in $*; do
+    rm $(get_note $note)
+done
