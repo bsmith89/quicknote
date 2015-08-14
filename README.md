@@ -9,5 +9,4 @@ easily expanded into full documents.
 -   Open grep hits
 -   Work with prefixes of filenames
 -   Bootstrap on install
--   quicknote.sh doctor
 -   bash completion
