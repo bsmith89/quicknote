@@ -11,9 +11,10 @@ export NOTE_SUFFIX=md
 # source $CONFIG_FILE
 
 # Find important paths
-export SCRIPT=$(readlink -f $0)
-export SCRIPT_DIR=$(dirname $SCRIPT)
-export ACTION_DIR=$SCRIPT_DIR/actions
+export QUICKNOTE_NAME=$0
+export QUICKNOTE=$(readlink -f $QUICKNOTE_NAME)
+export QUICKNOTE_DIR=$(dirname $QUICKNOTE)
+export ACTION_DIR=$QUICKNOTE_DIR/actions
 
 # Parse args
 action=${1-$DEFAULT_ACTION}
