@@ -63,7 +63,7 @@ get_new_note() {
         return 1
     fi
     if [ -z $1 ]; then
-        NOTE_FILE=$(mktemp -p $NOTE_DIR XXXX.$NOTE_SUFFIX)
+        NOTE_FILE=$(mktemp -p $NOTE_DIR XXXXXXXX.$NOTE_SUFFIX)
         echo $NOTE_FILE
     elif [ -f "$NOTE_DIR/$1.$NOTE_SUFFIX" ]; then
         echo "'$NOTE_DIR/$1.$NOTE_SUFFIX' is already a note." >&2
@@ -125,6 +125,11 @@ list_matching_infos() {
     fi
 }
 
+note_root() {
+    bn=$(basename $1)
+    echo ${bn/.$NOTE_SUFFIX/}
+}
+
 list_infos_unsorted() {
     if [ -z "$*" ]; then
         local NOTES=$(list_notes)
@@ -134,7 +139,7 @@ list_infos_unsorted() {
     for note in $NOTES; do
         check_note $note
         bn=$(basename $note)
-        echo "${bn/.${NOTE_SUFFIX}/}	$(note_date $note)	$(note_title $note)"
+        echo "$(note_root $note)	$(note_date $note)	$(note_title $note)"
     done
 }
 
@@ -159,4 +164,4 @@ edit_note() {
 export -f edit_note get_action list_actions get_note \
           get_new_note list_notes check_note note_title note_date list_infos \
           list_matching list_infos_unsorted list_matching_infos list_empty \
-          list_actions
+          list_actions note_root
