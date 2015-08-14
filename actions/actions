@@ -3,3 +3,4 @@
 for action in $(list_actions); do
     echo $(basename $action)
 done
+echo ""
