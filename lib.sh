@@ -16,16 +16,6 @@ export QUICKNOTE=$(readlink -f $QUICKNOTE_NAME)
 export QUICKNOTE_DIR=$(dirname $QUICKNOTE)
 export ACTION_DIR=$QUICKNOTE_DIR/actions
 
-# Echo the Usage Message
-echo_usage() {
-    echo "$USAGE_MSG"   >&2
-}
-
-# Echo the Help Message
-echo_help() {
-    echo "$HELP_MSG"    >&2
-}
-
 # Return the full path to an action if it exists, and is executible.
 get_action() {
     if [ -x "$ACTION_DIR/$1" ]; then
@@ -35,7 +25,7 @@ get_action() {
     else
         echo "'$1' does not appear to be an available action."  >&2
         echo "Is it in '$ADDON_DIR' and executible?"            >&2
-        echo_usage
+        echo $USAGE_MSG                                         >&2
         return 1
     fi
 }
@@ -46,7 +36,7 @@ list_actions() {
     local DIRS=$ACTION_DIR
     [ -d "$ADDON_DIR" ] && DIRS+=$ADDON_DIR
     for action in $(find $DIRS -mindepth 1); do
-        echo $action
+        [ -x $action ] && echo $action
     done
 }
 
@@ -162,7 +152,7 @@ edit_note() {
     fi
 }
 
-export -f edit_note echo_usage echo_help get_action list_actions get_note \
+export -f edit_note get_action list_actions get_note \
           get_new_note list_notes check_note note_title note_date list_infos \
           list_matching list_infos_unsorted list_matching_infos list_empty \
           list_actions

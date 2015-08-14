@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -o errexit
 
-USAGE_MSG="Usage: $(basename $0) [OPTIONS] [ACTION, [ARGS...]]"
-HELP_MSG="Work with simple note files."
+USAGE_MSG="Usage: $(basename $0) [ACTION, [ARGS...]]"
+HELP_MSG="Work with note files."
 
 # Find important 
 export QUICKNOTE_NAME=$0
@@ -11,6 +11,17 @@ export QUICKNOTE_DIR=$(dirname $QUICKNOTE)
 
 # Source library
 source $QUICKNOTE_DIR/lib.sh
+
+# Master Help
+if [ -n "$ECHO_HELP" ] && [ -z $1 ]; then
+    echo $USAGE_MSG
+    echo $HELP_MSG
+    ECHO_HELP=""
+    for action in $($QUICKNOTE actions); do
+        $QUICKNOTE help $action
+    done
+    exit 0
+fi
 
 # Source configuration files
 source $QUICKNOTE_DIR/config.sh

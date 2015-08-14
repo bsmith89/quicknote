@@ -4,7 +4,6 @@ easily expanded into full documents.
 ### TODO ###
 
 -   Documentation
--   Help
 -   Open grep hits
 -   Work with prefixes of filenames
 -   Bootstrap on install

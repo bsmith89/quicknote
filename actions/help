@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+USAGE_MSG="$(basename $0) [action]"
+HELP_MSG="Print the usage and help for an action.  Without args, print master help."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
+action=$1
+shift
+
+export ECHO_HELP=1
+$QUICKNOTE $action $*
