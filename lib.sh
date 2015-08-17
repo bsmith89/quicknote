@@ -44,7 +44,7 @@ list_actions() {
 # with or without extension, gets the full path to the
 # note file.
 get_note() {
-    local possib=$(ls $NOTE_DIR/$1*)
+    local possib=$(ls $NOTE_DIR/$1* 2>/dev/null)
     if [ -z $possib ]; then
         echo "No file matching '$NOTE_DIR/$1*' found"            >&2
         return 1
@@ -59,7 +59,7 @@ get_note() {
 
 get_new_note() {
     if ! [ -d "$NOTE_DIR" ]; then
-        echo "'$NOTE_DIR' is not an extant directory."
+        echo "'$NOTE_DIR' does not exist"
         return 1
     fi
     if [ -z $1 ]; then
