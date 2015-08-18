@@ -12,9 +12,10 @@ export QUICKNOTE_DIR=$(dirname $QUICKNOTE)
 # Source library
 source $QUICKNOTE_DIR/lib.sh
 
-# Source configuration files
-source $QUICKNOTE_DIR/config.sh
+# Source default configuration file
+source $QUICKNOTE_DIR/quicknote.cfg
 
+# Source local configuration file
 export QUICKNOTE_USR_CFG=$HOME/.quicknote.cfg
 [ -f $QUICKNOTE_USR_CFG ] && source $QUICKNOTE_USR_CFG
 
