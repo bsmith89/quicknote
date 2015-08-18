@@ -75,7 +75,7 @@ find_note() {
     fi
 }
 
-# Make a new note file and echo the path
+# Make a new note file if it doesn't already exist, and echo the path
 get_new_note() {
     if ! [ -z $2 ]; then
         echo "Too many arguments."  >&2
@@ -88,7 +88,7 @@ get_new_note() {
     else
         note=$(get_note $1)
         touch $note
-        echo $note
+        echo $note >&2
     fi
 }
 
