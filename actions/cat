@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 USAGE_MSG="$(basename $0) NOTE"
-HELP_MSG="Print the contents of NOTE to stdout."
+HELP_MSG="Echo the contents of NOTE to stdout."
 if [ -n "$ECHO_HELP" ]; then
     echo "    $USAGE_MSG"
     echo "        $HELP_MSG"
