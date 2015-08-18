@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 USAGE_MSG="$(basename $0) [ARGS]"
-HELP_MSG="Run git from inside the note directory."
+HELP_MSG="Run git from inside \$NOTE_DIR"
 if [ -n "$ECHO_HELP" ]; then
     echo "    $USAGE_MSG"
     echo "        $HELP_MSG"
