@@ -6,17 +6,18 @@ export NOTE_DIR=$HOME/Documents/NOTES
 export ADDON_DIR=$HOME/quicknote.actions.d
 export DEFAULT_ACTION=list
 export DEFAULT_SORT='sort -k2,3r'
-export NOTE_SUFFIX=md
+export NOTE_EXT=md
 # export CONFIG_FILE=$HOME/.note.cfg
 # source $CONFIG_FILE
 
 # Find important paths
-export QUICKNOTE_NAME=$0
-export QUICKNOTE=$(readlink -f $QUICKNOTE_NAME)
-export QUICKNOTE_DIR=$(dirname $QUICKNOTE)
 export ACTION_DIR=$QUICKNOTE_DIR/actions
 
-# Return the full path to an action if it exists, and is executible.
+
+# Actions {{{1
+
+# Echo the full path to an action if it exists, and is executible.
+# Echo error msg and return non-zero exit-code if action does not exist.
 get_action() {
     if [ -x "$ACTION_DIR/$1" ]; then
         echo $ACTION_DIR/$1
@@ -30,8 +31,7 @@ get_action() {
     fi
 }
 
-# List all of the available actions.
-# TODO: Implement
+# Echo all of the available actions (full paths)
 list_actions() {
     local DIRS=$ACTION_DIR
     [ -d "$ADDON_DIR" ] && DIRS+=$ADDON_DIR
@@ -40,37 +40,55 @@ list_actions() {
     done
 }
 
-# Given a basename or the prefix of a basename,
-# with or without extension, gets the full path to the
-# note file.
+
+# Paths to Notes {{{1
+
+# Given a complete reference (not prefix) to a note which may or may not exist,
+# return the canonical path.
 get_note() {
-    local possib=$(ls $NOTE_DIR/$1* 2>/dev/null)
-    if [ -z $possib ]; then
-        echo "No file matching '$NOTE_DIR/$1*' found"            >&2
+    echo $NOTE_DIR/${1%.${NOTE_EXT}}.${NOTE_EXT}
+}
+
+# Given one or more note references, echos all matching notes (full path).
+find_all_notes() {
+    set -f
+    for prefix in $*; do
+        find $NOTE_DIR -name ${prefix%.${NOTE_EXT}}*${NOTE_EXT}
+    done
+    set +f
+}
+
+# Given a note reference, echo the full path to the note file.
+find_note() {
+    ref=$1
+    candidates=$(find_all_notes $ref)
+    set $candidates  # $1, $2, etc. now equal each word in $candidates
+    if [ -z "$1" ]; then
+        echo "No files matching reference: '$ref'"           >&2
         return 1
-    elif [[ "$possib" == "${possib//[\' ]/}" ]]; then
-        echo $possib
+    elif [ -z $2 ]; then
+        echo $1
     else
-        echo "Multiple files found which match '$NOTE_DIR/$1\*':" >&2
-        echo $possib                                              >&2
+        echo "Multiple files matching reference: $ref" >&2
+        echo $*                                                 >&2
         return 1
     fi
 }
 
+# Make a new note file and echo the path
 get_new_note() {
-    if ! [ -d "$NOTE_DIR" ]; then
-        echo "'$NOTE_DIR' does not exist"
+    if ! [ -z $2 ]; then
+        echo "Too many arguments."  >&2
         return 1
     fi
+
     if [ -z $1 ]; then
-        NOTE_FILE=$(mktemp -p $NOTE_DIR XXXXXXXX.$NOTE_SUFFIX)
-        echo $NOTE_FILE
-    elif [ -f "$NOTE_DIR/$1.$NOTE_SUFFIX" ]; then
-        echo "'$NOTE_DIR/$1.$NOTE_SUFFIX' is already a note." >&2
-        return 1
+        note=$(mktemp -p $NOTE_DIR XXXXXXXX.$NOTE_EXT)
+        echo $note
     else
-        NOTE_FILE=$NOTE_DIR/$1.$NOTE_SUFFIX
-        echo $NOTE_FILE
+        note=$(get_note $1)
+        touch $note
+        echo $note
     fi
 }
 
@@ -80,42 +98,104 @@ get_new_note() {
 list_notes() {
     set -f
     if [ -z $1 ]; then
-        find $NOTE_DIR -name "*.$NOTE_SUFFIX"
+        find $NOTE_DIR -name "*.$NOTE_EXT"
     else
-        find $* -name "*.$NOTE_SUFFIX"
+        find "$@" -name "*.$NOTE_EXT"
     fi
     set +f
 }
 
+# Testing Notes {{{1
+
+# Confirm that note conforms to naming scheme.
+note_valid_name() {
+    relpath=${1##$NOTE_DIR/}
+    extension=${relpath##*.}
+    if ! [ $(basename $relpath) == $relpath ]; then  # Note in a subdirectory
+        echo "Note is not in $NOTE_DIR" >&2
+    elif ! [ "$extension" == "$NOTE_EXT" ]; then
+        echo "Note extension $extension is not $NOTE_EXT" >&2
+    fi
+}
+
+# Confirm that note exists
+note_exists() {
+    [ -f "$1" ]
+    return $?
+}
+
+# Check that note is usable
 check_note() {
-    if [ -z $1 ]; then
-        return 1
-    elif [ -f $1 ]; then
+    if note_valid_name $1 && note_exists $1 ; then
         return 0
     else
         return 1
     fi
 }
 
+# Parsing Notes {{{1
+
+note_root() {
+    bn=$(basename $1)
+    echo ${bn/.$NOTE_EXT/}
+}
+
+
+# Echo the title of the note
 note_title() {
     check_note $1
     awk 'NR==1' $1
 }
 
+# Echo the last modified time of the note (sortable)
 note_date() {
     check_note $1
     stat -c '%y' $1 | cut -c 1-16
 }
 
+
+# Filtering Notes {{{1
+
+# Echo all notes whose content (including title) match $pattern
 list_matching() {
     if [ -n "$*" ]; then
-        pattern=$*
-        list_notes | xargs grep --ignore-case -l "$pattern"
+        list_notes | xargs grep --ignore-case -l "$*"
     else
         list_notes
     fi
 }
 
+# Echo empty (zero-byte) notes.
+list_empty() {
+    find $(list_notes $*) -empty
+
+}
+
+
+# Summarizing Lists of Notes
+
+# Echo notes and info.
+# If given arguments (full paths), list only info for those notes.
+list_infos_unsorted() {
+    if [ -z "$*" ]; then
+        local notes=$(list_notes)
+    else
+        local notes=$*
+    fi
+    for note in $notes; do
+        check_note $note
+        echo "$(note_root $note)	$(note_date $note)	$(note_title $note)"
+    done
+}
+
+# Echo notes and info; sorted with $DEFAULT_SORT
+list_infos() {
+    list_infos_unsorted $* | $DEFAULT_SORT
+}
+
+# List info for all notes.
+# If given an argument, only list info for matching notes.
+# sorted with $DEFAULT_SORT
 list_matching_infos() {
     matching=$(list_matching $*)
     if ! [ -n "$matching" ]; then
@@ -125,43 +205,24 @@ list_matching_infos() {
     fi
 }
 
-note_root() {
-    bn=$(basename $1)
-    echo ${bn/.$NOTE_SUFFIX/}
-}
 
-list_infos_unsorted() {
-    if [ -z "$*" ]; then
-        local NOTES=$(list_notes)
-    else
-        local NOTES=$*
-    fi
-    for note in $NOTES; do
-        check_note $note
-        bn=$(basename $note)
-        echo "$(note_root $note)	$(note_date $note)	$(note_title $note)"
-    done
-}
-
-list_infos() {
-    list_infos_unsorted $* | $DEFAULT_SORT
-}
-
-list_empty() {
-    find $(list_notes $*) -empty
-
-}
+# Action Assistants {{{1
 
 edit_note() {
-    local NOTE_PATH=$(get_note $1)
-    if $(check_note $NOTE_PATH); then
-        $EDITOR $NOTE_PATH
+    if $(check_note $1); then
+        $EDITOR $1
     else
         return 1
     fi
 }
 
-export -f edit_note get_action list_actions get_note \
-          get_new_note list_notes check_note note_title note_date list_infos \
-          list_matching list_infos_unsorted list_matching_infos list_empty \
-          list_actions note_root
+# Export {{{1
+
+export -f get_action list_actions \
+          get_note find_all_notes find_note \
+          get_new_note list_notes \
+          note_valid_name note_exists check_note \
+          note_root note_title note_date \
+          list_matching list_empty \
+          list_infos_unsorted list_infos list_matching_infos \
+          edit_note
