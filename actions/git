@@ -9,4 +9,4 @@ if [ -n "$ECHO_HELP" ]; then
 fi
 
 cd $NOTE_DIR
-git $*
+git "$@"

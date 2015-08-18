@@ -8,4 +8,4 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-list_matching_infos $* | column -s '	' -t
+list_matching_infos "$@" | column -s '	' -t

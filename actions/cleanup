@@ -8,4 +8,6 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-rm $(list_empty $*)
+for note in $(list_empty "$@"); do
+    $QUICKNOTE rm $note
+done

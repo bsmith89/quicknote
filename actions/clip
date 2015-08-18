@@ -8,4 +8,4 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-$QUICKNOTE cat $* | $CLIPBOARD
+$QUICKNOTE cat "$@" | $CLIPBOARD

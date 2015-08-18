@@ -8,7 +8,7 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-for file in $(list_matching $*); do
+for file in $(list_matching "$@"); do
     echo [$(basename $file)]
     echo \# `note_title $file` \#
     grep -n --color=auto --ignore-case --no-filename "$*" $file
