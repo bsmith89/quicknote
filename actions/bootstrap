@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+USAGE_MSG="$(basename $0)"
+HELP_MSG="Bootstrap a quicknote system."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
+mkdir -p $NOTE_DIR
+$QUICKNOTE git init
+cat > $NOTE_DIR/.gitignore <<EOF
+*
+!*.$NOTE_EXT
+!.git*
+EOF
+$QUICKNOTE git add .gitignore
+$QUICKNOTE git commit -m "Initial commit"
