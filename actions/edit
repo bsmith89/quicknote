@@ -8,14 +8,15 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-if ! [ -z $1 ]; then
-    NAME=$1
+if [ -z $1 ]; then
+    name=$(list_infos | awk 'NR==1{print $1}')
+    note=$(find_note $name)
 elif ! [ -z $2 ]; then
     echo "Too many arguments."
     echo $USAGE_MSG
     exit 1
 else
-    NAME=$(list_infos | awk 'NR==1{print $1}')
+    note=$(find_note $1)
 fi
 
 edit_note $NAME

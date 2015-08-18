@@ -19,5 +19,5 @@ elif ! [ -z $2 ]; then
 fi
 
 
-note=$(get_note $1)
+note=$(find_note $1)
 cat $note

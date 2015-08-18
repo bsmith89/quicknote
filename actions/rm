@@ -8,6 +8,7 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-for note in $*; do
-    rm $(get_note $note)
+for name in "$@"; do
+    note=$(find_note $name)
+    rm -i $note && $QUICKNOTE git commit -m "Remove $(note_root $note)" $note
 done
