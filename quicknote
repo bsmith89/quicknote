@@ -12,17 +12,6 @@ export QUICKNOTE_DIR=$(dirname $QUICKNOTE)
 # Source library
 source $QUICKNOTE_DIR/lib.sh
 
-# Master Help
-if [ -n "$ECHO_HELP" ] && [ -z $1 ]; then
-    echo $USAGE_MSG
-    echo $HELP_MSG
-    ECHO_HELP=""
-    for action in $($QUICKNOTE actions); do
-        $QUICKNOTE help $action
-    done
-    exit 0
-fi
-
 # Source configuration files
 source $QUICKNOTE_DIR/config.sh
 
@@ -33,5 +22,20 @@ export QUICKNOTE_USR_CFG=$HOME/.quicknote.cfg
 action=${1-$DEFAULT_ACTION}
 shift || True
 
+if [ "$action" = "help" ]; then
+    export ECHO_HELP=1  # Any actions run will just print help and exit.
+    if [ -z $1 ]; then
+        echo $USAGE_MSG
+        echo $HELP_MSG
+        # Execute all actions in arguments.
+        for act in $(list_actions); do
+            $act
+        done
+    exit 0
+    fi
+    action=$1
+    shift
+fi
+
 ACTION_EXE=$(get_action $action)
-$ACTION_EXE $*
+$ACTION_EXE "$@"
