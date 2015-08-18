@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+USAGE_MSG="$(basename $0) NOTE"
+HELP_MSG="Write stdin to a note and also echo."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
+if ! [ -z $2 ]; then
+    echo "Too many arguments." >&2
+    echo $USAGE_MSG >&2
+    exit 1
+else
+    note=$(get_new_note $1)
+fi
+
+tee <&0 $note
+# Remove if still empty
+empty_note=$(list_empty $note)
+if ! [ -z $empty_note ]; then
+    echo "Note empty" >&2
+    rm $empty_note
+else
+    echo "Committing note" >&2
+    $QUICKNOTE git add $note
+    $QUICKNOTE git commit -m "Create $(note_root $note)"
+fi
