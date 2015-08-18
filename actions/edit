@@ -19,4 +19,8 @@ else
     note=$(find_note $1)
 fi
 
-edit_note $NAME
+echo $note
+edit_note $note
+if ! $QUICKNOTE git diff --exit-code $note; then
+    $QUICKNOTE git commit -m "Edit $(note_root $note)" $note
+fi

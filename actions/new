@@ -14,10 +14,13 @@ if ! [ -z $2 ]; then
     exit 1
 fi
 
-NOTE_FILE=$(get_new_note $1)
-edit_note $(basename $NOTE_FILE)
+note=$(get_new_note $1)
+edit_note $note
 # Remove if still empty
-empty_note=$(list_empty $NOTE_FILE)
+empty_note=$(list_empty $note)
 if [ -n $empty_note ]; then
     rm -f $empty_note
+else
+    $QUICKNOTE git add $note
+    $QUICKNOTE git commit -m "Create $(note_root $note)"
 fi
