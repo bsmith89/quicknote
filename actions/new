@@ -18,7 +18,7 @@ note=$(get_new_note $1)
 edit_note $note
 # Remove if still empty
 empty_note=$(list_empty $note)
-if [ -n $empty_note ]; then
+if ! [ -z $empty_note ]; then
     rm -f $empty_note
 else
     $QUICKNOTE git add $note
