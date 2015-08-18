@@ -24,7 +24,8 @@ action=${1-$DEFAULT_ACTION}
 shift || True
 
 if [ "$action" = "help" ]; then
-    export ECHO_HELP=1  # Any actions run will just print help and exit.
+    # By contract, any actions run should just print help and exit.
+    export ECHO_HELP=1
     if [ -z $1 ]; then
         echo $USAGE_MSG
         echo $HELP_MSG

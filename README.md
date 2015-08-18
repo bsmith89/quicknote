@@ -3,9 +3,19 @@ easily expanded into full documents.
 
 Inspired by [todo.sh](https://github.com/ginatrapani/todo.txt-cli).
 
+## Getting Started ##
+
+-   Install: `ln -s quicknote /somewhere/in/your/PATH`
+-   Configure: `cp quicknote.cfg ~/.quicknote.cfg`
+-   Configure: `# And edit if you don't like the defaults`
+-   Setup: `quicknote bootstrap`
+
+## Requirements ##
+
+-   `git`
+-   `bash`
+
 ### TODO ###
 
--   Documentation
 -   Open grep hits
--   Bootstrap on install
 -   bash completion
