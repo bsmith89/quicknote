@@ -7,7 +7,7 @@
 [ -z "$QN_NOTE_DIR" ]       && export QN_NOTE_DIR=$HOME/Documents/NOTES
 [ -z "$QN_ADDON_DIR" ]      && export QN_ADDON_DIR=$HOME/.quicknote.actions.d
 [ -z "$QN_DEFAULT_ACTION" ] && export QN_DEFAULT_ACTION=list
-[ -z "$QN_DEFAULT_SORT" ]   && export QN_DEFAULT_SORT='sort -k2,3r'
+[ -z "$QN_SORT" ]           && export QN_SORT='sort -k2,3r'
 [ -z "$QN_EXT" ]            && export QN_EXT=md
 [ -z "$QN_PATTERN" ]        && export QN_PATTERN="XXXXXXXX.$QN_EXT"
 # Default clipboard tool is defined for OSX
@@ -191,14 +191,14 @@ list_infos_unsorted() {
     done
 }
 
-# Echo notes and info; sorted with $QN_DEFAULT_SORT
+# Echo notes and info; sorted with $QN_SORT
 list_infos() {
-    list_infos_unsorted $* | $QN_DEFAULT_SORT
+    list_infos_unsorted $* | $QN_SORT
 }
 
 # List info for all notes.
 # If given an argument, only list info for matching notes.
-# sorted with $QN_DEFAULT_SORT
+# sorted with $QN_SORT
 list_matching_infos() {
     matching=$(list_matching $*)
     if ! [ -n "$matching" ]; then
