@@ -7,10 +7,40 @@ Inspired by [todo.sh](https://github.com/ginatrapani/todo.txt-cli).
 
 ## Getting Started ##
 
--   Install: `ln -s quicknote /somewhere/in/your/PATH`
--   Configure: `cp quicknote.cfg ~/.quicknote.cfg`
--   Configure: `# And edit if you don't like the defaults`
--   Setup: `quicknote bootstrap`
+-   **Install**
+
+    ```
+    git clone https://github.com/bsmith89/quicknote.git
+    cd quicknote
+    ln -s quicknote /somewhere/in/your/PATH
+    ```
+
+-   **Customize**
+
+    ```
+    cp quicknote.cfg ~/.quicknote.cfg
+    # edit .quicknote.cfg
+    # put new/overriding actions into ~/.quicknote.addons.d
+    ```
+
+-   **Bootstrap**
+
+    ```
+    quicknote bootstrap
+    ```
+
+-   **Add remote**
+
+    ```
+    quicknote git remote add origin [url]
+    quicknote push -u origin master
+    ```
+
+-   **Get help**
+
+    ```
+    quicknote help
+    ```
 
 ## Requirements ##
 
