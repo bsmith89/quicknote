@@ -15,7 +15,8 @@ if ! [ -z $2 ]; then
 fi
 
 note=$(get_new_note $1)
-$QUICKNOTE edit $note
+$QUICKNOTE edit $(note_root $note)
+
 # Remove if still empty
 empty_note=$(list_empty $note)
 if ! [ -z $empty_note ]; then

@@ -55,7 +55,7 @@ get_note() {
 # Given one or more note references, echos all matching notes (full path).
 find_all_notes() {
     set -f
-    for prefix in $*; do
+    for prefix in "$@"; do
         find $QN_NOTE_DIR -name ${prefix%.${QN_EXT}}*.${QN_EXT}
     done
     set +f
@@ -65,14 +65,15 @@ find_all_notes() {
 find_note() {
     ref=$1
     candidates=$(find_all_notes $ref)
-    set $candidates  # $1, $2, etc. now equal each word in $candidates
+    # $1, $2, etc. now equal each word in $candidates
+    set "$candidates"
     if [ -z "$1" ]; then
         echo "No files matching reference: '$ref'"     >&2
         return 1
     elif [ -z $2 ]; then
         echo $1
     else
-        echo "Multiple files matching reference: $ref" >&2
+        echo "Multiple files matching reference: '$ref'" >&2
         echo $*                                        >&2
         return 1
     fi
@@ -91,7 +92,7 @@ get_new_note() {
     else
         note=$(get_note $1)
         touch $note
-        echo $note                 >&2
+        echo $note
     fi
 }
 
