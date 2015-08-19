@@ -56,7 +56,7 @@ get_note() {
 find_all_notes() {
     set -f
     for prefix in $*; do
-        find $QN_NOTE_DIR -name ${prefix%.${QN_EXT}}*${QN_EXT}
+        find $QN_NOTE_DIR -name ${prefix%.${QN_EXT}}*.${QN_EXT}
     done
     set +f
 }
