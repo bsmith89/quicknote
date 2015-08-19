@@ -1,5 +1,7 @@
-This is meant to be an application for taking quick notes, which can be
-easily expanded into full documents.
+QuickNote - Turn out notes on a dime
+=========
+
+A commandline application to manage your notes.
 
 Inspired by [todo.sh](https://github.com/ginatrapani/todo.txt-cli).
 
@@ -15,7 +17,18 @@ Inspired by [todo.sh](https://github.com/ginatrapani/todo.txt-cli).
 -   `git`
 -   `bash`
 
-### TODO ###
+### (Planned) Features ###
 
--   Open grep hits
--   bash completion
+-   [x] Archive notes
+-   [x] Identify notes with only a unique prefix
+-   [x] Doctor: diagnose problems
+-   [x] Bootstrap setup
+-   [x] Git integration
+-   [x] Help system
+-   [x] Easily customizable and extensible
+-   [ ] Documentation (90% there)
+-   [ ] Bash completion
+-   [ ] Prettier grep output
+-   [ ] Speed optimization
+-   [ ] Add README.md example note to bootstrapped setups
+-   [ ] Name the process correctly on `quicknote edit`
