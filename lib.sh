@@ -9,6 +9,7 @@
 [ -z "$DEFAULT_ACTION" ]    && export DEFAULT_ACTION=list
 [ -z "$DEFAULT_SORT" ]      && export DEFAULT_SORT='sort -k2,3r'
 [ -z "$NOTE_EXT" ]          && export NOTE_EXT=md
+[ -z "$NOTE_PATTERN" ]      && export NOTE_PATTERN="XXXXXXXX.$NOTE_EXT"
 # Default clipboard tool is defined for OSX
 [ -z "$CLIPBOARD" ]         && export CLIPBOARD=${CLIPBOARD-pbcopy}
 
@@ -85,7 +86,7 @@ get_new_note() {
     fi
 
     if [ -z $1 ]; then
-        note=$(mktemp -p $NOTE_DIR XXXXXXXX.$NOTE_EXT)
+        note=$(mktemp -p $NOTE_DIR $NOTE_PATTERN)
         echo $note
     else
         note=$(get_note $1)
