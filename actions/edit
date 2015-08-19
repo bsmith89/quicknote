@@ -12,8 +12,8 @@ if [ -z $1 ]; then
     name=$(list_infos | awk 'NR==1{print $1}')
     note=$(find_note $name)
 elif ! [ -z $2 ]; then
-    echo "Too many arguments."
-    echo $USAGE_MSG
+    echo "Too many arguments." >&2
+    echo $USAGE_MSG            >&2
     exit 1
 else
     note=$(find_note $1)
@@ -21,6 +21,6 @@ fi
 
 echo $note
 edit_note $note
-if ! $QUICKNOTE git diff --exit-code $note; then
+if ! $QUICKNOTE git diff --quiet --exit-code $note; then
     $QUICKNOTE git commit -m "Edit $(note_root $note)" $note
 fi

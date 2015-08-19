@@ -10,7 +10,7 @@ fi
 
 if ! [ -z $2 ]; then
     echo "Too many arguments." >&2
-    echo $USAGE_MSG
+    echo $USAGE_MSG            >&2
     exit 1
 fi
 
