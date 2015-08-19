@@ -13,6 +13,7 @@ $QUICKNOTE git init
 cat > $QN_NOTE_DIR/.gitignore <<EOF
 *
 !*.$QN_EXT
+!*.$QN_EXT~
 !.git*
 EOF
 $QUICKNOTE git add .gitignore

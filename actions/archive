@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+USAGE_MSG="$(basename $0) NOTE"
+HELP_MSG="Stop listing a note."
+if [ -n "$ECHO_HELP" ]; then
+    echo "    $USAGE_MSG"
+    echo "        $HELP_MSG"
+    exit 0
+fi
+
+if [ -z $1 ]; then
+    echo "Too few arguments."  >&2
+    echo "$USAGE_MSG"          >&2
+elif ! [ -z $2 ]; then
+    echo "Too many arguments." >&2
+    echo "$USAGE_MSG"          >&2
+else
+    note=$(find_note $1)
+fi
+
+$QUICKNOTE git mv $note $note~
+$QUICKNOTE git commit -m "Archive $note"
