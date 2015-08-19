@@ -19,8 +19,12 @@ else
     note=$(find_note $1)
 fi
 
-echo $note
-edit_note $note
+if $(check_note $note); then
+    $EDITOR $note
+else
+    return 1
+fi
+
 if ! $QUICKNOTE git diff --quiet --exit-code $note; then
     $QUICKNOTE git commit -m "Edit $(note_root $note)" $note
 fi

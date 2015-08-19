@@ -209,15 +209,6 @@ list_matching_infos() {
 }
 
 
-# Action Assistants {{{1
-
-edit_note() {
-    if $(check_note $1); then
-        $EDITOR $1
-    else
-        return 1
-    fi
-}
 
 # Export {{{1
 
@@ -227,5 +218,4 @@ export -f get_action list_actions \
           note_valid_name note_exists check_note \
           note_root note_title note_date \
           list_matching list_empty \
-          list_infos_unsorted list_infos list_matching_infos \
-          edit_note
+          list_infos_unsorted list_infos list_matching_infos
