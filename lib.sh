@@ -23,9 +23,9 @@ export QN_ACTION_DIR=$QN_DIR/actions
 # Echo the full path to an action if it exists, and is executible.
 # Echo error msg and return non-zero exit-code if action does not exist.
 get_action() {
-    if [ -x "$QN_ACTION_DIR/$1" ]; then
-        echo $QN_ACTION_DIR/$1
-    elif [ -x "$QN_ADDON_DIR/$1" ]; then
+    if [ -x "$QN_ADDON_DIR/$1" ]; then
+        echo $QN_ADDON_DIR/$1
+    elif [ -x "$QN_ACTION_DIR/$1" ]; then
         echo $QN_ACTION_DIR/$1
     else
         echo "'$1' does not appear to be an available action." >&2
