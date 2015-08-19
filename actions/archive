@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-USAGE_MSG="$(basename $0) NOTE"
-HELP_MSG="Stop listing a note."
+USAGE_MSG="$(basename $0) [NOTE]"
+HELP_MSG="List archived notes.  With an arg, archive that note."
 if [ -n "$ECHO_HELP" ]; then
     echo "    $USAGE_MSG"
     echo "        $HELP_MSG"
@@ -9,14 +9,15 @@ if [ -n "$ECHO_HELP" ]; then
 fi
 
 if [ -z $1 ]; then
-    echo "Too few arguments."  >&2
-    echo "$USAGE_MSG"          >&2
+    set -f
+    find $QN_NOTE_DIR -name *.$QN_EXT~
+    set +f
 elif ! [ -z $2 ]; then
     echo "Too many arguments." >&2
     echo "$USAGE_MSG"          >&2
 else
     note=$(find_note $1)
+    $QUICKNOTE git mv $note $note~
+    $QUICKNOTE git commit -m "Archive $note"
 fi
 
-$QUICKNOTE git mv $note $note~
-$QUICKNOTE git commit -m "Archive $note"
