@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Library functions for quicknote
 
 # Config {{{1
@@ -116,9 +117,9 @@ note_valid_name() {
     relpath=${1##$QN_NOTE_DIR/}
     extension=${relpath##*.}
     if ! [ $(basename $relpath) == $relpath ]; then  # Note in a subdirectory
-        echo "Note is not in $QN_NOTE_DIR"              >&2
+        echo "$relpath is not in $QN_NOTE_DIR"              >&2
     elif ! [ "$extension" == "$QN_EXT" ]; then
-        echo "Note extension $extension is not $QN_EXT" >&2
+        echo "'$extension' does not have extension $QN_EXT" >&2
     fi
 }
 
