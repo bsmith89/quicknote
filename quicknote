@@ -38,4 +38,8 @@ if [ "$action" = "help" ]; then
 fi
 
 ACTION_EXE=$(get_action $action)
-$ACTION_EXE "$@"
+if [ -z "$ACTION_EXE" ]; then
+    exit 1
+else
+    $ACTION_EXE "$@"
+fi
