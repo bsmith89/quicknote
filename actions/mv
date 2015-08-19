@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-USAGE_MSG="$(basename $0) SRC DEST"
+USAGE_MSG="$(basename $0) NOTE DEST"
 HELP_MSG="Change note file names."
 if [ -n "$ECHO_HELP" ]; then
     echo "    $USAGE_MSG"
