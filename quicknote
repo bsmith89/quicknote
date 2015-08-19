@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -o errexit
 
 USAGE_MSG="Usage: $(basename $0) [ACTION, [ARGS...]]"
 HELP_MSG="Work with note files."
@@ -16,8 +15,7 @@ source $QUICKNOTE_DIR/lib.sh
 source $QUICKNOTE_DIR/quicknote.cfg
 
 # Source local configuration file
-export QUICKNOTE_USR_CFG=$HOME/.quicknote.cfg
-[ -f $QUICKNOTE_USR_CFG ] && source $QUICKNOTE_USR_CFG
+[ -f "$QUICKNOTE_USR_CFG" ] && source $QUICKNOTE_USR_CFG
 
 # Parse args
 action=${1-$DEFAULT_ACTION}

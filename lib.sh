@@ -1,18 +1,20 @@
+# Library functions for quicknote
+
+# Config {{{1
+# Environmental variables take precedence, but not if they're overriden in
+# quicknote.cfg or $QUICKNOTE_USR_CFG
+[ -z "$QUICKNOTE_USR_CFG" ] && export QUICKNOTE_USR_CFG=$HOME/.quicknote.cfg
+[ -z "$NOTE_DIR" ]          && export NOTE_DIR=$HOME/Documents/NOTES
+[ -z "$ADDON_DIR" ]         && export ADDON_DIR=$HOME/.quicknote.actions.d
+[ -z "$DEFAULT_ACTION" ]    && export DEFAULT_ACTION=list
+[ -z "$DEFAULT_SORT" ]      && export DEFAULT_SORT='sort -k2,3r'
+[ -z "$NOTE_EXT" ]          && export NOTE_EXT=md
+# Default clipboard tool is defined for OSX
+[ -z "$CLIPBOARD" ]         && export CLIPBOARD=${CLIPBOARD-pbcopy}
+
+
 # Find important paths
 export ACTION_DIR=$QUICKNOTE_DIR/actions
-
-# Config
-export NOTE_DIR=$HOME/Documents/NOTES
-export ADDON_DIR=$HOME/quicknote.actions.d
-export DEFAULT_ACTION=list
-export DEFAULT_SORT='sort -k2,3r'
-export NOTE_EXT=md
-# export CONFIG_FILE=$HOME/.note.cfg
-# source $CONFIG_FILE
-
-# Find important paths
-export ACTION_DIR=$QUICKNOTE_DIR/actions
-
 
 # Actions {{{1
 
