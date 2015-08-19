@@ -8,11 +8,11 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-mkdir -p $NOTE_DIR
+mkdir -p $QN_NOTE_DIR
 $QUICKNOTE git init
-cat > $NOTE_DIR/.gitignore <<EOF
+cat > $QN_NOTE_DIR/.gitignore <<EOF
 *
-!*.$NOTE_EXT
+!*.$QN_EXT
 !.git*
 EOF
 $QUICKNOTE git add .gitignore

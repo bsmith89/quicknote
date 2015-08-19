@@ -19,4 +19,3 @@ Inspired by [todo.sh](https://github.com/ginatrapani/todo.txt-cli).
 
 -   Open grep hits
 -   bash completion
--   Rename config variables so they can be set in .bashrc

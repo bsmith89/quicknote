@@ -8,10 +8,14 @@ if [ -n "$ECHO_HELP" ]; then
     exit 0
 fi
 
-[ -d $NOTE_DIR ] || echo "$NOTE_DIR doesn't exist" >&2
-cd $NOTE_DIR
+[ -d $QN_NOTE_DIR ] || echo "$QN_NOTE_DIR doesn't exist"                                      >&2
+cd $QN_NOTE_DIR
 
-git status 2>&1 >/dev/null || echo "$NOTE_DIR is not a git repository." >&2
-[ -z "$(git status --porcelain)" ] || echo "$NOTE_DIR has untracked content." >&2
-git diff --exit-code 2>&1 >/dev/null || echo "$NOTE_DIR has unstaged changes." >&2
-git diff --staged --exit-code 2>&1 >/dev/null || echo "$NOTE_DIR has uncommitted changes." >&2
+git status 2>&1 >/dev/null || \
+    echo "$QN_NOTE_DIR is not a git repository."   >&2
+[ -z "$(git status --porcelain)" ] || \
+    echo "$QN_NOTE_DIR has untracked content."     >&2
+git diff --exit-code 2>&1 >/dev/null || \
+    echo "$QN_NOTE_DIR has unstaged changes."      >&2
+git diff --staged --exit-code 2>&1 >/dev/null || \
+    echo "$QN_NOTE_DIR has uncommitted changes."   >&2

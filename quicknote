@@ -4,21 +4,21 @@ USAGE_MSG="Usage: $(basename $0) [ACTION, [ARGS...]]"
 HELP_MSG="Work with note files."
 
 # Find important 
-export QUICKNOTE_NAME=$0
-export QUICKNOTE=$(readlink -f $QUICKNOTE_NAME)
-export QUICKNOTE_DIR=$(dirname $QUICKNOTE)
+export QN_NAME=$0
+export QUICKNOTE=$(readlink -f $QN_NAME)
+export QN_DIR=$(dirname $QUICKNOTE)
 
 # Source library
-source $QUICKNOTE_DIR/lib.sh
+source $QN_DIR/lib.sh
 
 # Source default configuration file
-source $QUICKNOTE_DIR/quicknote.cfg
+source $QN_DIR/quicknote.cfg
 
 # Source local configuration file
-[ -f "$QUICKNOTE_USR_CFG" ] && source $QUICKNOTE_USR_CFG
+[ -f "$QN_USR_CFG" ] && source $QN_USR_CFG
 
 # Parse args
-action=${1-$DEFAULT_ACTION}
+action=${1-$QN_DEFAULT_ACTION}
 shift || True
 
 if [ "$action" = "help" ]; then

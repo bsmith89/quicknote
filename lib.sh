@@ -2,42 +2,42 @@
 
 # Config {{{1
 # Environmental variables take precedence, but not if they're overriden in
-# quicknote.cfg or $QUICKNOTE_USR_CFG
-[ -z "$QUICKNOTE_USR_CFG" ] && export QUICKNOTE_USR_CFG=$HOME/.quicknote.cfg
-[ -z "$NOTE_DIR" ]          && export NOTE_DIR=$HOME/Documents/NOTES
-[ -z "$ADDON_DIR" ]         && export ADDON_DIR=$HOME/.quicknote.actions.d
-[ -z "$DEFAULT_ACTION" ]    && export DEFAULT_ACTION=list
-[ -z "$DEFAULT_SORT" ]      && export DEFAULT_SORT='sort -k2,3r'
-[ -z "$NOTE_EXT" ]          && export NOTE_EXT=md
-[ -z "$NOTE_PATTERN" ]      && export NOTE_PATTERN="XXXXXXXX.$NOTE_EXT"
+# quicknote.cfg or $QN_USR_CFG
+[ -z "$QN_USR_CFG" ]        && export QN_USR_CFG=$HOME/.quicknote.cfg
+[ -z "$QN_NOTE_DIR" ]       && export QN_NOTE_DIR=$HOME/Documents/NOTES
+[ -z "$QN_ADDON_DIR" ]      && export QN_ADDON_DIR=$HOME/.quicknote.actions.d
+[ -z "$QN_DEFAULT_ACTION" ] && export QN_DEFAULT_ACTION=list
+[ -z "$QN_DEFAULT_SORT" ]   && export QN_DEFAULT_SORT='sort -k2,3r'
+[ -z "$QN_EXT" ]            && export QN_EXT=md
+[ -z "$QN_PATTERN" ]        && export QN_PATTERN="XXXXXXXX.$QN_EXT"
 # Default clipboard tool is defined for OSX
 [ -z "$CLIPBOARD" ]         && export CLIPBOARD=${CLIPBOARD-pbcopy}
 
 
 # Find important paths
-export ACTION_DIR=$QUICKNOTE_DIR/actions
+export QN_ACTION_DIR=$QN_DIR/actions
 
 # Actions {{{1
 
 # Echo the full path to an action if it exists, and is executible.
 # Echo error msg and return non-zero exit-code if action does not exist.
 get_action() {
-    if [ -x "$ACTION_DIR/$1" ]; then
-        echo $ACTION_DIR/$1
-    elif [ -x "$ADDON_DIR/$1" ]; then
-        echo $ACTION_DIR/$1
+    if [ -x "$QN_ACTION_DIR/$1" ]; then
+        echo $QN_ACTION_DIR/$1
+    elif [ -x "$QN_ADDON_DIR/$1" ]; then
+        echo $QN_ACTION_DIR/$1
     else
-        echo "'$1' does not appear to be an available action."  >&2
-        echo "Is it in '$ADDON_DIR' and executible?"            >&2
-        echo $USAGE_MSG                                         >&2
+        echo "'$1' does not appear to be an available action." >&2
+        echo "Is it in '$QN_ADDON_DIR' and executible?"        >&2
+        echo $USAGE_MSG                                        >&2
         return 1
     fi
 }
 
 # Echo all of the available actions (full paths)
 list_actions() {
-    local DIRS=$ACTION_DIR
-    [ -d "$ADDON_DIR" ] && DIRS+=$ADDON_DIR
+    local DIRS=$QN_ACTION_DIR
+    [ -d "$QN_ADDON_DIR" ] && DIRS+=$QN_ADDON_DIR
     for action in $(find $DIRS -mindepth 1); do
         [ -x $action ] && echo $action
     done
@@ -49,14 +49,14 @@ list_actions() {
 # Given a complete reference (not prefix) to a note which may or may not exist,
 # return the canonical path.
 get_note() {
-    echo $NOTE_DIR/${1%.${NOTE_EXT}}.${NOTE_EXT}
+    echo $QN_NOTE_DIR/${1%.${QN_EXT}}.${QN_EXT}
 }
 
 # Given one or more note references, echos all matching notes (full path).
 find_all_notes() {
     set -f
     for prefix in $*; do
-        find $NOTE_DIR -name ${prefix%.${NOTE_EXT}}*${NOTE_EXT}
+        find $QN_NOTE_DIR -name ${prefix%.${QN_EXT}}*${QN_EXT}
     done
     set +f
 }
@@ -67,13 +67,13 @@ find_note() {
     candidates=$(find_all_notes $ref)
     set $candidates  # $1, $2, etc. now equal each word in $candidates
     if [ -z "$1" ]; then
-        echo "No files matching reference: '$ref'"           >&2
+        echo "No files matching reference: '$ref'"     >&2
         return 1
     elif [ -z $2 ]; then
         echo $1
     else
         echo "Multiple files matching reference: $ref" >&2
-        echo $*                                                 >&2
+        echo $*                                        >&2
         return 1
     fi
 }
@@ -81,29 +81,29 @@ find_note() {
 # Make a new note file if it doesn't already exist, and echo the path
 get_new_note() {
     if ! [ -z $2 ]; then
-        echo "Too many arguments."  >&2
+        echo "Too many arguments." >&2
         return 1
     fi
 
     if [ -z $1 ]; then
-        note=$(mktemp -p $NOTE_DIR $NOTE_PATTERN)
+        note=$(mktemp -p $QN_NOTE_DIR $QN_PATTERN)
         echo $note
     else
         note=$(get_note $1)
         touch $note
-        echo $note >&2
+        echo $note                 >&2
     fi
 }
 
-# Produces a full list of note files in the $NOTE_DIR
+# Produces a full list of note files in the $QN_NOTE_DIR
 # If arguments are given, lists only notes with filenames that can
 # be found (recursively with find, so directories should work) in that list.
 list_notes() {
     set -f
     if [ -z $1 ]; then
-        find $NOTE_DIR -name "*.$NOTE_EXT"
+        find $QN_NOTE_DIR -name "*.$QN_EXT"
     else
-        find "$@" -name "*.$NOTE_EXT"
+        find "$@" -name "*.$QN_EXT"
     fi
     set +f
 }
@@ -112,12 +112,12 @@ list_notes() {
 
 # Confirm that note conforms to naming scheme.
 note_valid_name() {
-    relpath=${1##$NOTE_DIR/}
+    relpath=${1##$QN_NOTE_DIR/}
     extension=${relpath##*.}
     if ! [ $(basename $relpath) == $relpath ]; then  # Note in a subdirectory
-        echo "Note is not in $NOTE_DIR" >&2
-    elif ! [ "$extension" == "$NOTE_EXT" ]; then
-        echo "Note extension $extension is not $NOTE_EXT" >&2
+        echo "Note is not in $QN_NOTE_DIR"              >&2
+    elif ! [ "$extension" == "$QN_EXT" ]; then
+        echo "Note extension $extension is not $QN_EXT" >&2
     fi
 }
 
@@ -140,7 +140,7 @@ check_note() {
 
 note_root() {
     bn=$(basename $1)
-    echo ${bn/.$NOTE_EXT/}
+    echo ${bn/.$QN_EXT/}
 }
 
 
@@ -191,14 +191,14 @@ list_infos_unsorted() {
     done
 }
 
-# Echo notes and info; sorted with $DEFAULT_SORT
+# Echo notes and info; sorted with $QN_DEFAULT_SORT
 list_infos() {
-    list_infos_unsorted $* | $DEFAULT_SORT
+    list_infos_unsorted $* | $QN_DEFAULT_SORT
 }
 
 # List info for all notes.
 # If given an argument, only list info for matching notes.
-# sorted with $DEFAULT_SORT
+# sorted with $QN_DEFAULT_SORT
 list_matching_infos() {
     matching=$(list_matching $*)
     if ! [ -n "$matching" ]; then
