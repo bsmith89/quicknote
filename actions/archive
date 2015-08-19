@@ -18,6 +18,6 @@ elif ! [ -z $2 ]; then
 else
     note=$(find_note $1)
     $QUICKNOTE git mv $note $note~
-    $QUICKNOTE git commit -m "Archive $note"
+    $QUICKNOTE git commit -m "Archive $(note_root $note)"
 fi
 
