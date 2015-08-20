@@ -16,6 +16,7 @@ if [ -z $1 ]; then
 elif ! [ -z $2 ]; then
     echo >&2 "Too many arguments."
     echo >&2 "usage: $(basename $QUICKNOTE) $USAGE_MSG"
+    exit 1
 else
     note=$(find_note $1)
     $QUICKNOTE git mv $note $note~
