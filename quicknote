@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -o errexit
 
-USAGE_MSG="Usage: $(basename $0) [ACTION, [ARGS...]]"
+USAGE_MSG="$(basename $0) [ACTION, [ARGS...]]"
 HELP_MSG="Work with note files."
 
 # Find important 
@@ -26,7 +26,7 @@ if [ "$action" = "help" ]; then
     # By contract, any actions run should just print help and exit.
     export ECHO_HELP=1
     if [ -z $1 ]; then
-        echo $USAGE_MSG
+        echo "usage: $USAGE_MSG"
         echo $HELP_MSG
         # Execute all actions in arguments.
         for act in $(list_actions); do
