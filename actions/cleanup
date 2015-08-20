@@ -10,5 +10,5 @@ if [ -n "$ECHO_HELP" ]; then
 fi
 
 for note in $(list_empty "$@"); do
-    $QUICKNOTE rm $note
+    $QUICKNOTE rm $(note_root $note)
 done
