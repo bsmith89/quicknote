@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 USAGE_MSG="$(basename $0) NOTE"
 HELP_MSG="Write stdin to a note and also echo."

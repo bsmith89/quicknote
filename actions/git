@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 USAGE_MSG="$(basename $0) [ARGS]"
 HELP_MSG="Run git from inside \$QN_NOTE_DIR"

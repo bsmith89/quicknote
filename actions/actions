@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 USAGE_MSG="$(basename $0)"
 HELP_MSG="Print a list of available actions."

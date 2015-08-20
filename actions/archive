@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 USAGE_MSG="$(basename $0) [NOTE]"
 HELP_MSG="List archived notes.  With an arg, archive that note."

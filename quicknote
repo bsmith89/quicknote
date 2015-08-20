@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 USAGE_MSG="Usage: $(basename $0) [ACTION, [ARGS...]]"
 HELP_MSG="Work with note files."

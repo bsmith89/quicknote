@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -o errexit
 
 USAGE_MSG="$(basename $0)"
 HELP_MSG="Confirm that everything is right with the world."

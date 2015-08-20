@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Library functions for quicknote
+set -o errexit
 
 # Config {{{1
 # Environmental variables take precedence, but not if they're overriden in
