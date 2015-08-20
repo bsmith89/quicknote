@@ -17,14 +17,17 @@ else
     note=$(get_new_note $1)
 fi
 
+exit_trap() {
+    empty_note=$(list_empty $note)
+    if ! [ -z $empty_note ]; then
+        echo >&2 "Note empty"
+        rm $empty_note
+    else
+        echo >&2 "Committing note"
+        $QUICKNOTE git add $note
+        $QUICKNOTE git commit -m "Create $(note_root $note)"
+    fi
+}
+trap exit_trap EXIT
+
 tee <&0 $note
-# Remove if still empty
-empty_note=$(list_empty $note)
-if ! [ -z $empty_note ]; then
-    echo "Note empty"          >&2
-    rm $empty_note
-else
-    echo "Committing note"     >&2
-    $QUICKNOTE git add $note
-    $QUICKNOTE git commit -m "Create $(note_root $note)"
-fi
