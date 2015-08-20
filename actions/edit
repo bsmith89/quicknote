@@ -13,8 +13,8 @@ if [ -z $1 ]; then
     name=$(list_infos | awk 'NR==1{print $1}')
     note=$(find_note $name)
 elif ! [ -z $2 ]; then
-    echo "Too many arguments." >&2
-    echo $USAGE_MSG            >&2
+    echo >&2 "Too many arguments."
+    echo >&2 "usage: $(basename $QUICKNOTE) $USAGE_MSG"
     exit 1
 else
     note=$(find_note $1)

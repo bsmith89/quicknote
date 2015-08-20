@@ -2,7 +2,7 @@
 set -o errexit
 
 USAGE_MSG="$(basename $0) [NOTE, [NOTE, [...]]]"
-HELP_MSG="Remove empty note files.  Without arguments removes ALL empty notes."
+HELP_MSG="Remove note files if empty. Without arguments remove ALL empty notes."
 if [ -n "$ECHO_HELP" ]; then
     echo "    $USAGE_MSG"
     echo "        $HELP_MSG"

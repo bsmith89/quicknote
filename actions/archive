@@ -14,8 +14,8 @@ if [ -z $1 ]; then
     find $QN_NOTE_DIR -name *.$QN_EXT~
     set +f
 elif ! [ -z $2 ]; then
-    echo "Too many arguments." >&2
-    echo "$USAGE_MSG"          >&2
+    echo >&2 "Too many arguments."
+    echo >&2 "usage: $(basename $QUICKNOTE) $USAGE_MSG"
 else
     note=$(find_note $1)
     $QUICKNOTE git mv $note $note~

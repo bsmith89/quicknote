@@ -29,9 +29,9 @@ get_action() {
     elif [ -x "$QN_ACTION_DIR/$1" ]; then
         echo $QN_ACTION_DIR/$1
     else
-        echo "'$1' does not appear to be an available action." >&2
-        echo "Is it in '$QN_ADDON_DIR' and executible?"        >&2
-        echo $USAGE_MSG                                        >&2
+        echo >&2 "'$1' does not appear to be an available action."
+        echo >&2 "Is it in '$QN_ADDON_DIR' and executible?"
+        echo >&2 $USAGE_MSG
         return 1
     fi
 }
@@ -70,13 +70,13 @@ find_note() {
     # $1, $2, etc. now equal each word in $candidates
     set "$candidates"
     if [ -z "$1" ]; then
-        echo "No files matching reference: '$ref'"     >&2
+        echo >&2 "No files matching reference: '$ref'"
         return 1
     elif [ -z $2 ]; then
         echo $1
     else
-        echo "Multiple files matching reference: '$ref'" >&2
-        echo $*                                        >&2
+        echo >&2 "Multiple files matching reference: '$ref'"
+        echo >&2 $*
         return 1
     fi
 }
@@ -84,7 +84,7 @@ find_note() {
 # Make a new note file if it doesn't already exist, and echo the path
 get_new_note() {
     if ! [ -z $2 ]; then
-        echo "Too many arguments." >&2
+        echo >&2 "Too many arguments."
         return 1
     fi
 
@@ -118,9 +118,9 @@ note_valid_name() {
     relpath=${1##$QN_NOTE_DIR/}
     extension=${relpath##*.}
     if ! [ $(basename $relpath) == $relpath ]; then  # Note in a subdirectory
-        echo "$relpath is not in $QN_NOTE_DIR"              >&2
+        echo >&2 "$relpath is not in $QN_NOTE_DIR"
     elif ! [ "$extension" == "$QN_EXT" ]; then
-        echo "'$extension' does not have extension $QN_EXT" >&2
+        echo >&2 "'$extension' does not have extension $QN_EXT"
     fi
 }
 

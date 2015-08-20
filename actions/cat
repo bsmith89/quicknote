@@ -10,12 +10,12 @@ if [ -n "$ECHO_HELP" ]; then
 fi
 
 if [ -z $1 ]; then
-    echo "Insufficient arguments."  >&2
-    echo "Usage: $USAGE_MSG"        >&2
+    echo >&2 "Insufficient arguments."
+    echo >&2 "usage: $(basename $QUICKNOTE) $USAGE_MSG"
     exit 1
 elif ! [ -z $2 ]; then
-    echo "Too many arguments."      >&2
-    echo "Usage: $USAGE_MSG"        >&2
+    echo >&2 "Too many arguments."
+    echo >&2 "usage: $(basename $QUICKNOTE) $USAGE_MSG"
     exit 1
 fi
 
