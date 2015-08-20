@@ -39,7 +39,7 @@ get_action() {
 # Echo all of the available actions (full paths)
 list_actions() {
     local DIRS=$QN_ACTION_DIR
-    [ -d "$QN_ADDON_DIR" ] && DIRS+=$QN_ADDON_DIR
+    [ -d "$QN_ADDON_DIR" ] && DIRS="$DIRS $QN_ADDON_DIR"
     for action in $(find $DIRS -mindepth 1); do
         [ -x $action ] && echo $action
     done
