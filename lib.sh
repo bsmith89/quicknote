@@ -148,13 +148,11 @@ note_root() {
 
 # Echo the title of the note
 note_title() {
-    check_note $1
     awk 'NR==1' $1
 }
 
 # Echo the last modified time of the note (sortable)
 note_date() {
-    check_note $1
     stat -c '%y' $1 | cut -c 1-16
 }
 
